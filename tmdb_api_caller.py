@@ -22,7 +22,7 @@ template = {
    
 }
 
-for i in range(1,501):
+for i in range(1,100):
 
     response = requests.get("https://api.themoviedb.org/3/discover/movie?api_key="+ api_key+"&include_adult=false"+"&page="+str(i))
     result = response.json()
@@ -38,7 +38,7 @@ for i in range(1,501):
                 "vote_average":[],
                 "vote_count":[],
                 "budget":[],
-                "profit":[],
+                "profitable":[],
                 "star_popularity":[]
             }]  
         }
@@ -51,14 +51,14 @@ for i in range(1,501):
             #print(movie_result)
             #print(movie_result['adult'])
             template['title'] = movie_result['title']
-            #template['features'][0]['genre_ids'] = movie_result['genre_ids']
+            template['features'][0]['genre_ids'] = movie_result['genres'][0]['id']
             template['features'][0]['release_date'] = movie_result['release_date']
-            for x in range(0,len(movie_result['production_companies'])):
-                template['features'][0]['production_companies'].append(movie_result['production_companies'][x]['id'])
+            #for x in range(0,len(movie_result['production_companies'])):
+            template['features'][0]['production_companies'].append(movie_result['production_companies'][0]['id'])
             template['features'][0]['vote_average'] = movie_result['vote_average']
             template['features'][0]['vote_count'] = movie_result['vote_count']
             template['features'][0]['budget'] = movie_result['budget']
-            template['features'][0]['profit'] = movie_result['revenue'] - movie_result['budget']
+            template['features'][0]['profitable'] = movie_result['revenue'] - movie_result['budget'] > 0
 
 
             credit_response = requests.get("https://api.themoviedb.org/3/movie/" + str(movie_id) +"/credits?api_key="+api_key+"&language=en-US")
