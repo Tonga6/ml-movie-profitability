@@ -22,7 +22,7 @@ template = {
    
 }
 
-for i in range(1,2):
+for i in range(1,501):
 
     response = requests.get("https://api.themoviedb.org/3/discover/movie?api_key="+ api_key+"&include_adult=false"+"&page="+str(i))
     result = response.json()
@@ -53,7 +53,6 @@ for i in range(1,2):
             template['title'] = movie_result['title']
             #template['features'][0]['genre_ids'] = movie_result['genre_ids']
             template['features'][0]['release_date'] = movie_result['release_date']
-            print(range(0,len(movie_result['production_companies'])))
             for x in range(0,len(movie_result['production_companies'])):
                 template['features'][0]['production_companies'].append(movie_result['production_companies'][x]['id'])
             template['features'][0]['vote_average'] = movie_result['vote_average']
@@ -71,6 +70,8 @@ for i in range(1,2):
             movie_db['results'].append(template)    
         except KeyError:
             print("KeyError")
+        except IndexError:
+            print("IndexError")
         j+=1
 
 
