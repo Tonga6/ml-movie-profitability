@@ -17,7 +17,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.linear_model import LogisticRegression
 
 
-df = pd.read_csv('movies_db_ML.csv')
+df = pd.read_csv('moviesDatabase.csv')
 
 features_taken=['results/features/0/genre_ids', 
             'results/features/0/production_companies/0', 
