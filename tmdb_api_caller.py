@@ -10,8 +10,8 @@ movie_db = {
 labels_json = {
     'labels':[]
 }
-
-for i in range(1,100):
+isProfitable = False
+for i in range(1,500):
 
     response = requests.get("https://api.themoviedb.org/3/discover/movie?api_key="+ api_key+"&include_adult=false"+"&page="+str(i))
     result = response.json()
@@ -47,7 +47,8 @@ for i in range(1,100):
                 template['features'][0]['vote_average'] = movie_result['vote_average']
                 template['features'][0]['vote_count'] = movie_result['vote_count']
                 template['features'][0]['budget'] = movie_result['budget']
-                labels_json['labels'].append(movie_result['revenue'] - movie_result['budget'] > 0)
+
+                
 
 
                 credit_response = requests.get("https://api.themoviedb.org/3/movie/" + str(movie_id) +"/credits?api_key="+api_key+"&language=en-US")
@@ -56,6 +57,8 @@ for i in range(1,100):
                 # print(movie_result)
                 template['features'][0]['star_popularity']= credit_result['cast'][0]['popularity']
 
+                isProfitable = movie_result['revenue'] - movie_result['budget'] > 0
+                labels_json['labels'].append(isProfitable)
                 movie_db['results'].append(template)    
         except KeyError:
             print("KeyError")
