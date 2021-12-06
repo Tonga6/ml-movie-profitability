@@ -13,8 +13,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import confusion_matrix
-
-from sklearn.linear_model import LogisticRegression
+import seaborn as sn
 
 
 df = pd.read_csv('moviesDatabase.csv')
@@ -44,16 +43,22 @@ for n in n_range:
         scores = cross_val_score(model, x,y, cv =5, scoring ='f1')
     mean_error.append(np.array(scores).mean())
     std_error.append(np.array(scores).std())
-plt.errorbar(n_range, mean_error,yerr=std_error,linewidth = 3)
-plt.xlabel('n')
-plt.ylabel('F1 score')
+#plt.errorbar(n_range, mean_error,yerr=std_error,linewidth = 3)
+#plt.xlabel('n')
+#plt.ylabel('F1 score')
 #plt.show()
 
 
-model = KNeighborsClassifier(n_neighbors=5, weights='uniform')
+
+model = KNeighborsClassifier(n_neighbors=9, weights='uniform')
 model.fit(x,y)
 ypred = model.predict(x)
-print(ypred)
+#print(ypred)
 
+#print(y)
 
-print(confusion_matrix(y, ypred))
+confusion_matrix = pd.crosstab(y, ypred, rownames=['Actual'], colnames=['Predicted'])
+sn.heatmap(confusion_matrix,annot =True, fmt ='g')
+plt.show()
+
+#print(confusion_matrix(y, ypred))
